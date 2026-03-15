@@ -1,0 +1,14 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: ml-inference-scaler
+spec:
+  scaleTargetRef: {name: ml-inference}
+  minReplicaCount: 0
+  maxReplicaCount: 20
+  triggers:
+    - type: prometheus
+      metadata:
+        serverAddress: http://prometheus.monitoring:9090
+        query: sum(ml_inference_pending_requests)
+        threshold: "10"
