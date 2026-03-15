@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ml-platform
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/harshadkhetpal/k8s-ml-deployment
+    targetRevision: HEAD
+    path: charts/ml-app
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ml-prod
+  syncPolicy:
+    automated: {prune: true, selfHeal: true}
